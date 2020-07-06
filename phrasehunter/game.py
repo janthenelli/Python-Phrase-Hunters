@@ -2,6 +2,7 @@
 import random
 import re
 from phrase import Phrase
+from phraseslist import RANDOM_PHRASES
 
 class Game:
     def __init__(self, phrases):
@@ -36,4 +37,38 @@ class Game:
             self.current_game_state('stop')
             print('Congratulations! You guessed the phrase correctly!')
 
+    def play_game(self):
+        print("Welcome to Phrase Hunters!\n")
+        while self.game_active:
+            print(self.selected_phrase.show_phrase() + '\n')
+            player_guess = self.get_player_input()
+            print('\n')
+            if player_guess not in self.selected_phrase.phrase:
+                self.lives -= 1
+                print("Oops, that's not in the phrase. You now have {} lives left out of 5".format(self.lives))
+                self.check_win_loss()
+            else:
+                for letter in self.selected_phrase.characters_in_phrase:
+                    letter.check_char_guessed(player_guess)
+                
+                self.selected_phrase.check_phrase_solved()
+                self.check_win_loss()
+        self.ask_to_replay()
 
+    def ask_to_replay(self):
+        while True:
+            replay = input("Would you like to play again? Y/N:  ")
+            if replay.lower() == 'y':
+                self.current_game_state('start')
+                break
+            elif replay.lower() == 'n':
+                self.current_game_state('stop')
+                break
+            else:
+                print("Please enter either 'Y' or 'N'\n")
+        if self.game_active:
+            self.restart_game()
+
+    def restart_game(self):
+        new_game = Game(RANDOM_PHRASES)
+        new_game.play_game()
