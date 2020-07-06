@@ -6,7 +6,7 @@ class Character(str):
         self.was_guessed = False
 
 
-    def check_char_guessed(guess):
+    def check_char_guessed(self, guess):
         if guess == self.original:
             self.was_guessed = True
         return self.was_guessed

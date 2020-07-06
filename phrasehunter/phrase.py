@@ -14,7 +14,8 @@ class Phrase:
     def check_phrase_solved(self):
         characters_guessed = []
         for letter in self.characters_in_phrase:
-            characters_guessed.append(letter.was_guessed)
+            if letter != ' ':
+                characters_guessed.append(letter.was_guessed)
         if all(characters_guessed):
             self.solved = True
         else:
